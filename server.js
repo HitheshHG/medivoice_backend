@@ -6,7 +6,7 @@ const app = express()
 
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: env.ALLOWED_ORIGIN || "http://localhost:3000",
     credentials: true
   })
 )
