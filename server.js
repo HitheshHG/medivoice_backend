@@ -28,8 +28,6 @@ app.use(errorHandler)
 const PORT = process.env.PORT || 3000
 app.listen(PORT, () => console.log(`Server running on ${PORT}`))
 
-const cors = require("cors")
-
 const allowedOrigins = [
   "https://medivoice-frontend-mu.vercel.app",
   "https://medivoice-hg.vercel.app",
