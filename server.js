@@ -27,3 +27,23 @@ app.use(errorHandler)
 
 const PORT = process.env.PORT || 3000
 app.listen(PORT, () => console.log(`Server running on ${PORT}`))
+
+const cors = require("cors")
+
+const allowedOrigins = [
+  "https://medivoice-frontend-mu.vercel.app",
+  "https://medivoice-hg.vercel.app",
+  // add more as needed
+]
+
+app.use(cors({
+  origin: (origin, callback) => {
+    // Allow requests with no origin (e.g. mobile apps, Postman)
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true)
+    } else {
+      callback(new Error(`CORS blocked: ${origin} is not allowed`))
+    }
+  },
+  credentials: true
+}))
