@@ -4,12 +4,22 @@ require("dotenv").config()
 
 const app = express()
 
-app.use(
-  cors({
-    origin: process.env.ALLOWED_ORIGIN || "http://localhost:5173",
-    credentials: true
-  })
-)
+const allowedOrigins = [
+  "https://medivoice-frontend-mu.vercel.app",
+  "https://medivoice-hg.vercel.app",
+  "http://localhost:5173"
+]
+
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true)
+    } else {
+      callback(new Error(`CORS blocked: ${origin} is not allowed`))
+    }
+  },
+  credentials: true
+}))
 
 app.use(express.json())
 
@@ -27,21 +37,3 @@ app.use(errorHandler)
 
 const PORT = process.env.PORT || 3000
 app.listen(PORT, () => console.log(`Server running on ${PORT}`))
-
-const allowedOrigins = [
-  "https://medivoice-frontend-mu.vercel.app",
-  "https://medivoice-hg.vercel.app",
-  // add more as needed
-]
-
-app.use(cors({
-  origin: (origin, callback) => {
-    // Allow requests with no origin (e.g. mobile apps, Postman)
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true)
-    } else {
-      callback(new Error(`CORS blocked: ${origin} is not allowed`))
-    }
-  },
-  credentials: true
-}))
